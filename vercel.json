@@ -1,0 +1,9 @@
+{
+  "buildCommand": "npm install",
+  "public": true,
+  "functions": {
+    "backend/server.js": {
+      "runtime": "nodejs18.x"
+    }
+  }
+}
