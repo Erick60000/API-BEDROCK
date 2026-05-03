@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor de Addons Minecraft Bedrock</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Editor de Addons Minecraft Bedrock</h1>
+        <p>Crea y modifica addons completos para Minecraft Bedrock con todos los componentes necesarios.</p>
+    </header>
+
+    <main>
+        <section id="crear-addon">
+            <h2>Crear Nuevo Addon</h2>
+            <form id="form-addon">
+                <label for="nombre-addon">Nombre del Addon:</label>
+                <input type="text" id="nombre-addon" required>
+
+                <label for="version-addon">Versión:</label>
+                <input type="text" id="version-addon" value="1.0.0" required>
+
+                <label for="descripcion-addon">Descripción:</label>
+                <textarea id="descripcion-addon"></textarea>
+
+                <label for="uuid-addon">UUID (opcional):</label>
+                <input type="text" id="uuid-addon" placeholder="Generar automáticamente">
+
+                <button type="submit">Crear Addon</button>
+            </form>
+        </section>
+
+        <section id="explorador">
+            <h2>Explorador de Archivos</h2>
+            <div id="file-tree"></div>
+            <div id="file-editor">
+                <h3>Editor de Archivo</h3>
+                <textarea id="editor-content" placeholder="Contenido del archivo"></textarea>
+                <button id="save-file">Guardar Archivo</button>
+            </div>
+        </section>
+
+        <section id="entidades">
+            <h2>Entidades</h2>
+            <button id="agregar-entidad">Agregar Entidad</button>
+            <div id="lista-entidades"></div>
+        </section>
+
+        <section id="bloques">
+            <h2>Bloques</h2>
+            <button id="agregar-bloque">Agregar Bloque</button>
+            <div id="lista-bloques"></div>
+        </section>
+
+        <section id="texturas">
+            <h2>Texturas</h2>
+            <input type="file" id="subir-textura" accept="image/*" multiple>
+            <div id="lista-texturas"></div>
+        </section>
+
+        <section id="addons-guardados">
+            <h2>Addons Guardados</h2>
+            <ul id="lista-addons"></ul>
+        </section>
+
+        <section id="descargar">
+            <h2>Descargar Addon</h2>
+            <button id="descargar-addon">Descargar como ZIP</button>
+        </section>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script type="module" src="app.js"></script>
+</body>
+</html>
