@@ -20,6 +20,14 @@ function init() {
     const saveFileBtn = document.getElementById('save-file');
     const statusAddon = document.getElementById('status-addon');
     const statusFiles = document.getElementById('status-files');
+    const currentAddonName = document.getElementById('current-addon-name');
+    const currentAddonVersion = document.getElementById('current-addon-version');
+    const currentAddonUuid = document.getElementById('current-addon-uuid');
+    const currentAddonEntityCount = document.getElementById('current-addon-entity-count');
+    const currentAddonBlockCount = document.getElementById('current-addon-block-count');
+    const currentAddonTextureCount = document.getElementById('current-addon-texture-count');
+    const addonDescription = document.getElementById('addon-description');
+    const folderList = document.getElementById('folder-list');
 
     renderAddonList(listaAddons, loadAddonsFromStorage(), index => {
         currentAddon = loadAddonsFromStorage()[index];
@@ -117,10 +125,55 @@ function init() {
         renderBlockList(listaBloques, currentAddon ? currentAddon.bloques : [], addComponentToBlock, removeBlockComponent);
         renderTextureList(listaTexturas, currentAddon ? currentAddon.texturas : []);
         updateStatus();
+        updateAddonSummary();
     }
 
     function getFileContent(obj, keys) {
         return keys.reduce((current, key) => current && current[key], obj);
+    }
+
+    function updateAddonSummary() {
+        if (!currentAddon) {
+            currentAddonName.textContent = 'Ninguno';
+            currentAddonVersion.textContent = '-';
+            currentAddonUuid.textContent = '-';
+            currentAddonEntityCount.textContent = '0';
+            currentAddonBlockCount.textContent = '0';
+            currentAddonTextureCount.textContent = '0';
+            addonDescription.textContent = 'Crea un addon para ver sus detalles aquí.';
+            folderList.innerHTML = '<li>No hay addon activo.</li>';
+            return;
+        }
+
+        currentAddonName.textContent = currentAddon.nombre;
+        currentAddonVersion.textContent = currentAddon.version;
+        currentAddonUuid.textContent = currentAddon.uuid;
+        currentAddonEntityCount.textContent = currentAddon.entidades.length;
+        currentAddonBlockCount.textContent = currentAddon.bloques.length;
+        currentAddonTextureCount.textContent = currentAddon.texturas.length;
+        addonDescription.textContent = currentAddon.descripcion || 'Sin descripción.';
+        renderFolderListSummary(currentAddon.files);
+    }
+
+    function renderFolderListSummary(files) {
+        const elements = [];
+
+        function walk(node, parentPath = '') {
+            Object.keys(node).forEach(key => {
+                const value = node[key];
+                const fullPath = parentPath ? `${parentPath}/${key}` : key;
+
+                if (value && typeof value === 'object' && !Array.isArray(value)) {
+                    elements.push(`<li><strong>${fullPath}</strong></li>`);
+                    walk(value, fullPath);
+                } else {
+                    elements.push(`<li>${fullPath}</li>`);
+                }
+            });
+        }
+
+        walk(files);
+        folderList.innerHTML = elements.length ? elements.join('') : '<li>No hay archivos.</li>';
     }
 
     function updateStatus() {
