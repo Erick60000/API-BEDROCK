@@ -62,24 +62,29 @@ export function generateEntityJson(name, components = []) {
                 is_experimental: false
             },
             components: components.reduce((acc, comp) => {
-                acc[comp] = {};
+                acc[comp.name] = comp.value !== undefined ? comp.value : {};
                 return acc;
             }, {})
         }
     });
 }
 
-export function generateBlockJson(name) {
+export function generateBlockJson(name, components = []) {
+    const componentData = components.reduce((acc, comp) => {
+        acc[comp.name] = comp.value !== undefined ? comp.value : {};
+        return acc;
+    }, {
+        'minecraft:loot': `loot_tables/blocks/${name}.json`,
+        'minecraft:destroy_time': 2.0
+    });
+
     return safeJson({
         format_version: '1.16.0',
         'minecraft:block': {
             description: {
                 identifier: `addon:${name}`
             },
-            components: {
-                'minecraft:loot': `loot_tables/blocks/${name}.json`,
-                'minecraft:destroy_time': 2.0
-            }
+            components: componentData
         }
     });
 }

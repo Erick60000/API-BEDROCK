@@ -4,74 +4,132 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editor de Addons Minecraft Bedrock</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="src/css/styles.css">
 </head>
 <body>
-    <header>
-        <h1>Editor de Addons Minecraft Bedrock</h1>
-        <p>Crea y modifica addons completos para Minecraft Bedrock con todos los componentes necesarios.</p>
+    <header class="site-header">
+        <div class="brand-panel">
+            <span class="brand-badge">Bridge v2</span>
+            <div>
+                <h1>Editor de Addons Bedrock</h1>
+                <p>Herramienta visual para crear y exportar addons completos de Minecraft Bedrock.</p>
+            </div>
+        </div>
+        <nav class="site-nav">
+            <a href="#dashboard">Dashboard</a>
+            <a href="#editor">Editor</a>
+            <a href="#entidades">Entidades</a>
+            <a href="#bloques">Bloques</a>
+            <a href="#texturas">Texturas</a>
+            <a href="#descargar">Descargar</a>
+        </nav>
     </header>
 
-    <main>
-        <section id="crear-addon">
-            <h2>Crear Nuevo Addon</h2>
-            <form id="form-addon">
-                <label for="nombre-addon">Nombre del Addon:</label>
-                <input type="text" id="nombre-addon" required>
-
-                <label for="version-addon">Versión:</label>
-                <input type="text" id="version-addon" value="1.0.0" required>
-
-                <label for="descripcion-addon">Descripción:</label>
-                <textarea id="descripcion-addon"></textarea>
-
-                <label for="uuid-addon">UUID (opcional):</label>
-                <input type="text" id="uuid-addon" placeholder="Generar automáticamente">
-
-                <button type="submit">Crear Addon</button>
-            </form>
-        </section>
-
-        <section id="explorador">
-            <h2>Explorador de Archivos</h2>
-            <div id="file-tree"></div>
-            <div id="file-editor">
-                <h3>Editor de Archivo</h3>
-                <textarea id="editor-content" placeholder="Contenido del archivo"></textarea>
-                <button id="save-file">Guardar Archivo</button>
+    <main class="page-grid">
+        <aside class="sidebar">
+            <div class="panel">
+                <h2>Bienvenido</h2>
+                <p>Este tablero organiza tu flujo de trabajo en un solo lugar. Crea tu addon, agrega componentes, y luego descárgalo.</p>
             </div>
-        </section>
+            <div class="panel">
+                <h2>Estado del proyecto</h2>
+                <ul>
+                    <li>Addon activo: <strong id="status-addon">No</strong></li>
+                    <li>Archivos totales: <strong id="status-files">0</strong></li>
+                </ul>
+            </div>
+            <div class="panel credits-panel">
+                <h2>Créditos</h2>
+                <p>Creado por <strong>Erick60000</strong></p>
+                <p>Editor visual de addons con soporte para entidades, bloques y texturas.</p>
+            </div>
+        </aside>
 
-        <section id="entidades">
-            <h2>Entidades</h2>
-            <button id="agregar-entidad">Agregar Entidad</button>
-            <div id="lista-entidades"></div>
-        </section>
+        <section class="content">
+            <section id="dashboard" class="hero-card">
+                <div class="hero-grid">
+                    <article class="hero-card-item">
+                        <h3>Proyecto completo</h3>
+                        <p>Diseño estilo Bridge v2 con estructura de proyecto clara y ordenada.</p>
+                    </article>
+                    <article class="hero-card-item">
+                        <h3>Editor de add-ons</h3>
+                        <p>Control total sobre entidades, bloques, texturas y archivos del addon.</p>
+                    </article>
+                    <article class="hero-card-item">
+                        <h3>Exportación rápida</h3>
+                        <p>Genera el paquete ZIP listo para importar en Minecraft Bedrock.</p>
+                    </article>
+                </div>
+            </section>
 
-        <section id="bloques">
-            <h2>Bloques</h2>
-            <button id="agregar-bloque">Agregar Bloque</button>
-            <div id="lista-bloques"></div>
-        </section>
+            <section id="editor">
+                <div class="panel">
+                    <h2>Crear nuevo addon</h2>
+                    <form id="form-addon" class="card-form">
+                        <label for="nombre-addon">Nombre del Addon:</label>
+                        <input type="text" id="nombre-addon" required>
 
-        <section id="texturas">
-            <h2>Texturas</h2>
-            <input type="file" id="subir-textura" accept="image/*" multiple>
-            <div id="lista-texturas"></div>
-        </section>
+                        <label for="version-addon">Versión:</label>
+                        <input type="text" id="version-addon" value="1.0.0" required>
 
-        <section id="addons-guardados">
-            <h2>Addons Guardados</h2>
-            <ul id="lista-addons"></ul>
-        </section>
+                        <label for="descripcion-addon">Descripción:</label>
+                        <textarea id="descripcion-addon"></textarea>
 
-        <section id="descargar">
-            <h2>Descargar Addon</h2>
-            <button id="descargar-addon">Descargar como ZIP</button>
+                        <label for="uuid-addon">UUID (opcional):</label>
+                        <input type="text" id="uuid-addon" placeholder="Generar automáticamente">
+
+                        <button type="submit">Crear Addon</button>
+                    </form>
+                </div>
+                <div id="explorador" class="panel explorer-panel">
+                    <h2>Explorador de archivos</h2>
+                    <div id="file-tree"></div>
+                    <div id="file-editor">
+                        <h3>Editor de archivo</h3>
+                        <textarea id="editor-content" placeholder="Selecciona un archivo para editar"></textarea>
+                        <button id="save-file">Guardar archivo</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="entidades" class="panel section-panel">
+                <div class="section-header">
+                    <h2>Entidades</h2>
+                    <button id="agregar-entidad" class="secondary-button">Agregar Entidad</button>
+                </div>
+                <div id="lista-entidades"></div>
+            </section>
+
+            <section id="bloques" class="panel section-panel">
+                <div class="section-header">
+                    <h2>Bloques</h2>
+                    <button id="agregar-bloque" class="secondary-button">Agregar Bloque</button>
+                </div>
+                <div id="lista-bloques"></div>
+            </section>
+
+            <section id="texturas" class="panel section-panel">
+                <div class="section-header">
+                    <h2>Texturas</h2>
+                    <input type="file" id="subir-textura" accept="image/*" multiple>
+                </div>
+                <div id="lista-texturas"></div>
+            </section>
+
+            <section id="addons-guardados" class="panel section-panel">
+                <h2>Addons guardados</h2>
+                <ul id="lista-addons"></ul>
+            </section>
+
+            <section id="descargar" class="panel section-panel">
+                <h2>Descargar addon</h2>
+                <button id="descargar-addon">Descargar como ZIP</button>
+            </section>
         </section>
     </main>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script type="module" src="app.js"></script>
+    <script type="module" src="src/js/app.js"></script>
 </body>
 </html>

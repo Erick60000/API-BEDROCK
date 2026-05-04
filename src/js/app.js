@@ -18,6 +18,8 @@ function init() {
     const fileTree = document.getElementById('file-tree');
     const editorContent = document.getElementById('editor-content');
     const saveFileBtn = document.getElementById('save-file');
+    const statusAddon = document.getElementById('status-addon');
+    const statusFiles = document.getElementById('status-files');
 
     renderAddonList(listaAddons, loadAddonsFromStorage(), index => {
         currentAddon = loadAddonsFromStorage()[index];
@@ -62,8 +64,8 @@ function init() {
         const nombreBloque = prompt('Nombre del bloque:');
         if (!nombreBloque) return;
 
-        currentAddon.bloques.push({ nombre: nombreBloque });
-        currentAddon.files.behavior_packs.blocks[`${nombreBloque}.json`] = generateBlockJson(nombreBloque);
+        currentAddon.bloques.push({ nombre: nombreBloque, componentes: [] });
+        currentAddon.files.behavior_packs.blocks[`${nombreBloque}.json`] = generateBlockJson(nombreBloque, []);
         updateEditorState();
     });
 
@@ -111,22 +113,87 @@ function init() {
             const fileContent = getFileContent(currentAddon.files, path.split('/'));
             editorContent.value = fileContent || '';
         });
-        renderEntityList(listaEntidades, currentAddon ? currentAddon.entidades : [], addComponentToEntity);
-        renderBlockList(listaBloques, currentAddon ? currentAddon.bloques : []);
+        renderEntityList(listaEntidades, currentAddon ? currentAddon.entidades : [], addComponentToEntity, removeEntityComponent);
+        renderBlockList(listaBloques, currentAddon ? currentAddon.bloques : [], addComponentToBlock, removeBlockComponent);
         renderTextureList(listaTexturas, currentAddon ? currentAddon.texturas : []);
+        updateStatus();
     }
 
     function getFileContent(obj, keys) {
         return keys.reduce((current, key) => current && current[key], obj);
     }
 
+    function updateStatus() {
+        statusAddon.textContent = currentAddon ? currentAddon.nombre : 'No';
+        statusFiles.textContent = currentAddon ? countFiles(currentAddon.files) : '0';
+    }
+
+    function countFiles(node) {
+        if (!node || typeof node !== 'object') return 0;
+        return Object.entries(node).reduce((count, [key, value]) => {
+            if (value && typeof value === 'object' && !Array.isArray(value)) {
+                return count + countFiles(value);
+            }
+            return count + 1;
+        }, 0);
+    }
+
     function addComponentToEntity(index) {
         const componente = prompt('Nombre del componente (ej: minecraft:health):');
         if (!componente) return;
-        currentAddon.entidades[index].componentes.push(componente);
+        const valor = prompt('Valor JSON del componente (por ejemplo {"max":20}) o deja vacío para {}');
+        let parsedValue = {};
+        if (valor) {
+            try {
+                parsedValue = JSON.parse(valor);
+            } catch (err) {
+                parsedValue = valor;
+            }
+        }
+
+        currentAddon.entidades[index].componentes.push({ name: componente, value: parsedValue });
         currentAddon.files.behavior_packs.entities[`${currentAddon.entidades[index].nombre}.json`] = generateEntityJson(
             currentAddon.entidades[index].nombre,
             currentAddon.entidades[index].componentes
+        );
+        updateEditorState();
+    }
+
+    function removeEntityComponent(index, componentIndex) {
+        currentAddon.entidades[index].componentes.splice(componentIndex, 1);
+        currentAddon.files.behavior_packs.entities[`${currentAddon.entidades[index].nombre}.json`] = generateEntityJson(
+            currentAddon.entidades[index].nombre,
+            currentAddon.entidades[index].componentes
+        );
+        updateEditorState();
+    }
+
+    function addComponentToBlock(index) {
+        const componente = prompt('Nombre del componente (ej: minecraft:destroy_time):');
+        if (!componente) return;
+        const valor = prompt('Valor JSON del componente (por ejemplo 2.0 o {"enabled":true}) o deja vacío para {}');
+        let parsedValue = {};
+        if (valor) {
+            try {
+                parsedValue = JSON.parse(valor);
+            } catch (err) {
+                parsedValue = valor;
+            }
+        }
+
+        currentAddon.bloques[index].componentes.push({ name: componente, value: parsedValue });
+        currentAddon.files.behavior_packs.blocks[`${currentAddon.bloques[index].nombre}.json`] = generateBlockJson(
+            currentAddon.bloques[index].nombre,
+            currentAddon.bloques[index].componentes
+        );
+        updateEditorState();
+    }
+
+    function removeBlockComponent(index, componentIndex) {
+        currentAddon.bloques[index].componentes.splice(componentIndex, 1);
+        currentAddon.files.behavior_packs.blocks[`${currentAddon.bloques[index].nombre}.json`] = generateBlockJson(
+            currentAddon.bloques[index].nombre,
+            currentAddon.bloques[index].componentes
         );
         updateEditorState();
     }

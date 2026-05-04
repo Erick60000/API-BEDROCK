@@ -36,27 +36,64 @@ function createFolderList(folder, path, onSelectFile) {
     return ul;
 }
 
-export function renderEntityList(container, entidades, onAddComponent) {
+export function renderEntityList(container, entidades, onAddComponent, onRemoveComponent) {
     container.innerHTML = '';
     entidades.forEach((entidad, index) => {
+        const componentes = entidad.componentes || [];
         const div = document.createElement('div');
         div.className = 'entidad';
         div.innerHTML = `
-            <h3>${entidad.nombre}</h3>
-            <button type="button">Agregar Componente</button>
-            <ul>${entidad.componentes.map(comp => `<li>${comp}</li>`).join('')}</ul>
+            <div class="entity-header">
+                <h3>${entidad.nombre}</h3>
+                <button type="button" class="secondary-button">Agregar componente</button>
+            </div>
+            <ul class="component-list">
+                ${componentes.length === 0 ? '<li class="empty">Sin componentes</li>' : componentes.map((comp, compIndex) => `
+                    <li>
+                        <strong>${comp.name}</strong>
+                        <span>${typeof comp.value === 'object' ? JSON.stringify(comp.value) : comp.value}</span>
+                        <button type="button" class="remove-comp" data-index="${compIndex}">Eliminar</button>
+                    </li>
+                `).join('')}
+            </ul>
         `;
+
         div.querySelector('button').addEventListener('click', () => onAddComponent(index));
+        div.querySelectorAll('.remove-comp').forEach(button => {
+            const componentIndex = Number(button.dataset.index);
+            button.addEventListener('click', () => onRemoveComponent(index, componentIndex));
+        });
         container.appendChild(div);
     });
 }
 
-export function renderBlockList(container, bloques) {
+export function renderBlockList(container, bloques, onAddComponent, onRemoveComponent) {
     container.innerHTML = '';
-    bloques.forEach(bloque => {
+    bloques.forEach((bloque, index) => {
+        const componentes = bloque.componentes || [];
         const div = document.createElement('div');
         div.className = 'bloque';
-        div.innerHTML = `<h3>${bloque.nombre}</h3>`;
+        div.innerHTML = `
+            <div class="entity-header">
+                <h3>${bloque.nombre}</h3>
+                <button type="button" class="secondary-button">Agregar componente</button>
+            </div>
+            <ul class="component-list">
+                ${componentes.length === 0 ? '<li class="empty">Sin componentes</li>' : componentes.map((comp, compIndex) => `
+                    <li>
+                        <strong>${comp.name}</strong>
+                        <span>${typeof comp.value === 'object' ? JSON.stringify(comp.value) : comp.value}</span>
+                        <button type="button" class="remove-comp" data-index="${compIndex}">Eliminar</button>
+                    </li>
+                `).join('')}
+            </ul>
+        `;
+
+        div.querySelector('button').addEventListener('click', () => onAddComponent(index));
+        div.querySelectorAll('.remove-comp').forEach(button => {
+            const componentIndex = Number(button.dataset.index);
+            button.addEventListener('click', () => onRemoveComponent(index, componentIndex));
+        });
         container.appendChild(div);
     });
 }

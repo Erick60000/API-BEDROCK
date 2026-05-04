@@ -26,13 +26,19 @@ Una página web para crear y modificar addons de Minecraft Bedrock con soporte p
 ## 🧩 Estructura del proyecto
 
 ```
-├── addonManager.js        # Lógica del addon y generación de JSON
-├── app.js                 # Entrada principal de la app
-├── ui.js                  # Render de UI y componentes visuales
-├── utils.js               # Utilidades comunes como UUID y descargas
+├── assets/
+│   └── icons/             # Carpeta para iconos y recursos gráficos
+├── src/
+│   ├── css/
+│   │   └── styles.css     # Estilos principales de la aplicación
+│   └── js/
+│       ├── addonManager.js
+│       ├── app.js
+│       ├── ui.js
+│       ├── utils.js
+│       └── script.js      # Código legacy existente (no cargado por index)
 ├── index.html             # Interfaz de usuario principal
-├── styles.css             # Estilos de la página
-└── script.js              # Código legacy existente (no cargado por index)
+└── README.md              # Documentación del proyecto
 ```
 
 ## 🖥️ Cómo funciona
