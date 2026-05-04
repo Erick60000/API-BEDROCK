@@ -10,11 +10,11 @@ export function createAddon({ nombre, version, descripcion, uuid }) {
         uuid: addonUuid,
         files: {
             'manifest.json': generateManifest(nombre, version, descripcion, addonUuid),
-            behavior_pack: {
+            behavior_packss: {
                 entities: {},
                 blocks: {}
             },
-            resource_pack: {
+            resource_packss: {
                 textures: {}
             }
         },

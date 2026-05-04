@@ -32,9 +32,9 @@ document.addEventListener('DOMContentLoaded', function() {
             uuid,
             files: {
                 'manifest.json': generateManifest(nombre, version, descripcion, uuid),
-                'behavior_pack/entities/': {},
-                'behavior_pack/blocks/': {},
-                'resource_pack/textures/': {}
+                'behavior_packs/entities/': {},
+                'behavior_packs/blocks/': {},
+                'resource_packs/textures/': {}
             },
             entidades: [],
             bloques: [],

@@ -53,7 +53,7 @@ function init() {
         if (!nombreEntidad) return;
 
         currentAddon.entidades.push({ nombre: nombreEntidad, componentes: [] });
-        currentAddon.files.behavior_pack.entities[`${nombreEntidad}.json`] = generateEntityJson(nombreEntidad, []);
+        currentAddon.files.behavior_packs.entities[`${nombreEntidad}.json`] = generateEntityJson(nombreEntidad, []);
         updateEditorState();
     });
 
@@ -63,7 +63,7 @@ function init() {
         if (!nombreBloque) return;
 
         currentAddon.bloques.push({ nombre: nombreBloque });
-        currentAddon.files.behavior_pack.blocks[`${nombreBloque}.json`] = generateBlockJson(nombreBloque);
+        currentAddon.files.behavior_packs.blocks[`${nombreBloque}.json`] = generateBlockJson(nombreBloque);
         updateEditorState();
     });
 
@@ -74,7 +74,7 @@ function init() {
             const reader = new FileReader();
             reader.onload = e => {
                 currentAddon.texturas.push({ nombre: file.name, data: e.target.result });
-                currentAddon.files.resource_pack.textures[file.name] = e.target.result;
+                currentAddon.files.resource_packs.textures[file.name] = e.target.result;
                 updateEditorState();
             };
             reader.readAsDataURL(file);
@@ -124,7 +124,7 @@ function init() {
         const componente = prompt('Nombre del componente (ej: minecraft:health):');
         if (!componente) return;
         currentAddon.entidades[index].componentes.push(componente);
-        currentAddon.files.behavior_pack.entities[`${currentAddon.entidades[index].nombre}.json`] = generateEntityJson(
+        currentAddon.files.behavior_packs.entities[`${currentAddon.entidades[index].nombre}.json`] = generateEntityJson(
             currentAddon.entidades[index].nombre,
             currentAddon.entidades[index].componentes
         );
