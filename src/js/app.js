@@ -18,6 +18,7 @@ function init() {
     const fileTree = document.getElementById('file-tree');
     const editorContent = document.getElementById('editor-content');
     const saveFileBtn = document.getElementById('save-file');
+    const engineVersionSelect = document.getElementById('engine-version');
     const statusAddon = document.getElementById('status-addon');
     const statusFiles = document.getElementById('status-files');
     const currentAddonName = document.getElementById('current-addon-name');
@@ -41,8 +42,9 @@ function init() {
         const version = document.getElementById('version-addon').value.trim();
         const descripcion = document.getElementById('descripcion-addon').value.trim();
         const uuid = document.getElementById('uuid-addon').value.trim() || generateUUID();
+        const engineVersion = engineVersionSelect.value;
 
-        currentAddon = createAddon({ nombre, version, descripcion, uuid });
+        currentAddon = createAddon({ nombre, version, descripcion, uuid, engineVersion });
         updateEditorState();
         showAlert('Addon creado. Ahora puedes agregar entidades, bloques y texturas.');
     });

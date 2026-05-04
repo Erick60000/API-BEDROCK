@@ -1,20 +1,27 @@
 import { generateUUID, safeJson } from './utils.js';
 
-export function createAddon({ nombre, version, descripcion, uuid }) {
+function normalizeVersion(version = '1.26.30') {
+    const parts = version.split('.').map(part => Number(part.trim()) || 0);
+    return [parts[0] || 1, parts[1] || 26, parts[2] || 30].slice(0, 3);
+}
+
+export function createAddon({ nombre, version, descripcion, uuid, engineVersion }) {
     const addonUuid = uuid || generateUUID();
+    const engineVersionArray = normalizeVersion(engineVersion);
 
     return {
         nombre,
         version,
         descripcion,
         uuid: addonUuid,
+        engineVersion: engineVersionArray.join('.'),
         files: {
-            'manifest.json': generateManifest(nombre, version, descripcion, addonUuid),
-            behavior_packss: {
+            'manifest.json': generateManifest(nombre, version, descripcion, addonUuid, engineVersionArray),
+            behavior_packs: {
                 entities: {},
                 blocks: {}
             },
-            resource_packss: {
+            resource_packs: {
                 textures: {}
             }
         },
@@ -24,15 +31,15 @@ export function createAddon({ nombre, version, descripcion, uuid }) {
     };
 }
 
-export function generateManifest(name, version, description, uuid) {
+export function generateManifest(name, version, description, uuid, engineVersionArray = [1, 26, 30]) {
     return safeJson({
         format_version: 2,
         header: {
             description: description,
             name: name,
             uuid: uuid,
-            version: version.split('.').map(Number),
-            min_engine_version: [1, 16, 0]
+            version: normalizeVersion(version),
+            min_engine_version: engineVersionArray
         },
         modules: [
             {

@@ -60,6 +60,10 @@
                         <h3>Exportación rápida</h3>
                         <p>Genera el paquete ZIP listo para importar en Minecraft Bedrock.</p>
                     </article>
+                    <article class="hero-card-item">
+                        <h3>Compatibilidad</h3>
+                        <p>Preparado para Minecraft Bedrock 1.26.x con manifest moderno.</p>
+                    </article>
                 </div>
             </section>
 
@@ -70,8 +74,16 @@
                         <label for="nombre-addon">Nombre del Addon:</label>
                         <input type="text" id="nombre-addon" required>
 
-                        <label for="version-addon">Versión:</label>
+                        <label for="version-addon">Versión del addon:</label>
                         <input type="text" id="version-addon" value="1.0.0" required>
+
+                        <label for="engine-version">Versión de Minecraft Bedrock:</label>
+                        <select id="engine-version">
+                            <option value="1.26.10">1.26.10</option>
+                            <option value="1.26.20">1.26.20</option>
+                            <option value="1.26.30">1.26.30</option>
+                            <option value="1.26.30.25">1.26.30.25</option>
+                        </select>
 
                         <label for="descripcion-addon">Descripción:</label>
                         <textarea id="descripcion-addon"></textarea>
