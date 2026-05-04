@@ -5,6 +5,7 @@ Una página web para crear y modificar addons de Minecraft Bedrock con soporte p
 ## 🚀 Características
 
 - Crear un addon completo con manifest
+- Compatibilidad con Minecraft Bedrock 1.26.x
 - Agregar entidades con componentes personalizados
 - Crear bloques y exportar archivos JSON
 - Subir texturas y ver miniaturas

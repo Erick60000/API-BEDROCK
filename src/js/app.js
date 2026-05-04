@@ -23,6 +23,7 @@ function init() {
     const statusFiles = document.getElementById('status-files');
     const currentAddonName = document.getElementById('current-addon-name');
     const currentAddonVersion = document.getElementById('current-addon-version');
+    const currentAddonEngineVersion = document.getElementById('current-addon-engine-version');
     const currentAddonUuid = document.getElementById('current-addon-uuid');
     const currentAddonEntityCount = document.getElementById('current-addon-entity-count');
     const currentAddonBlockCount = document.getElementById('current-addon-block-count');
@@ -150,6 +151,7 @@ function init() {
         currentAddonName.textContent = currentAddon.nombre;
         currentAddonVersion.textContent = currentAddon.version;
         currentAddonUuid.textContent = currentAddon.uuid;
+        currentAddonEngineVersion.textContent = currentAddon.engineVersion || '1.26.30';
         currentAddonEntityCount.textContent = currentAddon.entidades.length;
         currentAddonBlockCount.textContent = currentAddon.bloques.length;
         currentAddonTextureCount.textContent = currentAddon.texturas.length;

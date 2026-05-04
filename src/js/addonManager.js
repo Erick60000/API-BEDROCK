@@ -46,13 +46,13 @@ export function generateManifest(name, version, description, uuid, engineVersion
                 description: description,
                 type: 'data',
                 uuid: generateUUID(),
-                version: version.split('.').map(Number)
+                version: normalizeVersion(version)
             },
             {
                 description: description,
                 type: 'resources',
                 uuid: generateUUID(),
-                version: version.split('.').map(Number)
+                version: normalizeVersion(version)
             }
         ]
     });
