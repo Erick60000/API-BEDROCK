@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRArchive Compiler</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">▓▒░</span>
+      <span class="brand-name">BRArchive<span class="brand-accent">Compiler</span></span>
+    </div>
+    <span class="version-tag">v0.1 — formato ERKBRAR1</span>
+  </header>
+
+  <main>
+
+    <!-- PANTALLA 1: SELECCIÓN -->
+    <section id="screen-upload" class="screen active">
+      <h1>Compila tu addon a <span class="accent">__brarchive</span></h1>
+      <p class="subtitle">Sube un <code>.mcaddon</code>. Se analizan sus packs y se genera la estructura BRArchive sin tocar componentes, geometrías ni identificadores.</p>
+
+      <label for="file-input" id="dropzone" class="dropzone">
+        <div class="dropzone-inner">
+          <span class="dropzone-icon">⇪</span>
+          <p class="dropzone-text">Arrastra tu <strong>.mcaddon</strong> aquí</p>
+          <p class="dropzone-or">o</p>
+          <span class="btn btn-primary" id="browse-btn">Seleccionar archivo</span>
+        </div>
+      </label>
+      <input type="file" id="file-input" accept=".mcaddon" hidden>
+
+      <div id="file-info" class="file-info hidden">
+        <div class="file-info-row">
+          <span class="file-name" id="file-name">—</span>
+          <span class="file-size" id="file-size">—</span>
+        </div>
+        <button id="compile-btn" class="btn btn-accent" disabled>Compilar addon</button>
+      </div>
+
+      <p class="hint">Tamaño máximo: <span id="max-size-label">200&nbsp;MB</span>. Solo se aceptan archivos <code>.mcaddon</code> válidos.</p>
+    </section>
+
+    <!-- PANTALLA 2: COMPILANDO -->
+    <section id="screen-progress" class="screen">
+      <h1>Compilando<span class="dots"><span>.</span><span>.</span><span>.</span></span></h1>
+
+      <div class="progress-bar-wrap">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+      <p class="progress-percent" id="progress-percent">0%</p>
+
+      <div class="console" id="console-log" aria-live="polite">
+        <!-- las líneas de etapa se insertan aquí por JS -->
+      </div>
+    </section>
+
+    <!-- PANTALLA 3: RESULTADO -->
+    <section id="screen-result" class="screen">
+      <div class="result-badge">✅</div>
+      <h1>Compilación completada</h1>
+
+      <div class="result-card">
+        <div class="result-row">
+          <span class="result-label">Archivo</span>
+          <span class="result-value" id="result-name">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Tamaño</span>
+          <span class="result-value" id="result-size">—</span>
+        </div>
+      </div>
+
+      <div class="result-actions">
+        <button id="download-btn" class="btn btn-accent">Descargar MCAddon</button>
+        <button id="reset-btn" class="btn btn-ghost">Procesar otro addon</button>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Procesamiento local en el navegador. Nada se sube a un servidor salvo que actives el modo backend.</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="js/brarchive.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
