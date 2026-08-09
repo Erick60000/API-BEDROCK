@@ -1,29 +1,34 @@
-# BRArchive Compiler
+# BRArchive Compiler — Advanced Starter
 
-Proyecto inicial de una página web para procesar `.mcaddon`.
+Esta versión mejora la base anterior y usa `brarchive-cli` como motor real para la generación de `.brarchive`.
 
-## Estado
+## Por qué esta versión es más segura
 
-Esta primera versión contiene:
-- interfaz web para Android;
-- selección de `.mcaddon`;
-- subida al backend;
-- extracción básica;
-- procesamiento aislado;
-- recompresión del addon;
-- descarga del resultado.
+No intenta reconstruir el formato binario de BRArchive con JavaScript. El proyecto de referencia publica `brarchive-cli`, con `encode --recursive`, que recorre un pack y crea la estructura `__brarchive`. Esto evita una implementación binaria casera.
 
-## Importante
-
-La generación de `.brarchive` todavía NO se considera implementada. El archivo `compiler.js` deja esa etapa aislada hasta verificar las reglas exactas del formato BRArchive. No se debe presentar esta versión como un compilador BRArchive definitivo.
-
-## Ejecutar
+## Ejecutar con Docker (recomendado)
 
 ```bash
+docker build -t brarchive-compiler .
+docker run --rm -p 3000:3000 brarchive-compiler
+```
+
+Abrir `http://localhost:3000`.
+
+## Ejecutar sin Docker
+
+Instala Node.js y el CLI de BRArchive:
+
+```bash
+cargo install brarchive-cli
 npm install
 npm start
 ```
 
-Luego abrir:
+## Flujo
 
-`http://localhost:3000`
+`.mcaddon` → extraer `.mcpack` → procesar cada pack con `brarchive-cli encode --recursive` → volver a empaquetar `.mcaddon`.
+
+## Nota
+
+El progreso de la interfaz representa las etapas del trabajo; el servidor no expone todavía eventos internos de cada archivo. Para un progreso 100% real por archivo se puede añadir WebSocket/SSE en la siguiente versión.
