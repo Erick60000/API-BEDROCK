@@ -1,74 +1,58 @@
-const input = document.querySelector("#addon");
-const compile = document.querySelector("#compile");
-const info = document.querySelector("#fileInfo");
-const progressBox = document.querySelector("#progressBox");
-const status = document.querySelector("#status");
-const bar = document.querySelector("#bar");
-const percent = document.querySelector("#percent");
-const result = document.querySelector("#result");
+const $=s=>document.querySelector(s);
+const input=$("#addon"), fileBox=$("#file"), go=$("#go"), progress=$("#progress");
+const stage=$("#stage"), pct=$("#pct"), fill=$("#fill"), done=$("#done"), doneText=$("#doneText");
+const download=$("#download"), again=$("#again"), error=$("#error");
 
-input.addEventListener("change", () => {
-  const file = input.files[0];
-  if (!file) return;
-  info.textContent = `${file.name} • ${(file.size / 1024 / 1024).toFixed(2)} MB`;
-  info.classList.remove("hidden");
-  compile.disabled = !file.name.toLowerCase().endsWith(".mcaddon");
-});
+let selected=null;
 
-compile.addEventListener("click", async () => {
-  const file = input.files[0];
-  if (!file) return;
-
-  compile.disabled = true;
-  progressBox.classList.remove("hidden");
-  result.classList.add("hidden");
-
-  const stages = [
-    ["Preparando archivo...", 10],
-    ["Subiendo addon...", 25],
-    ["Procesando estructura...", 50],
-    ["Generando salida...", 75],
-    ["Finalizando...", 95]
-  ];
-
-  let stage = 0;
-  const timer = setInterval(() => {
-    if (stage < stages.length) {
-      status.textContent = stages[stage][0];
-      bar.style.width = stages[stage][1] + "%";
-      percent.textContent = stages[stage][1] + "%";
-      stage++;
-    }
-  }, 700);
-
-  const form = new FormData();
-  form.append("addon", file);
-
-  try {
-    const response = await fetch("/api/compile", { method: "POST", body: form });
-    clearInterval(timer);
-
-    if (!response.ok) throw new Error((await response.json()).error || "Falló la compilación.");
-
-    const blob = await response.blob();
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = file.name.replace(/\.mcaddon$/i, "") + "_compiled.mcaddon";
-    a.click();
-    URL.revokeObjectURL(url);
-
-    bar.style.width = "100%";
-    percent.textContent = "100%";
-    status.textContent = "Compilación completada";
-    result.innerHTML = '<div class="success">✅ Compilación completada</div><p>El archivo resultante se ha preparado para descargar.</p>';
-    result.classList.remove("hidden");
-  } catch (error) {
-    clearInterval(timer);
-    status.textContent = "Error";
-    result.textContent = "❌ " + error.message;
-    result.classList.remove("hidden");
-  } finally {
-    compile.disabled = false;
+input.onchange=()=>{
+  selected=input.files[0]||null;
+  if(!selected)return;
+  if(!selected.name.toLowerCase().endsWith(".mcaddon")){
+    showError("Selecciona un archivo .mcaddon válido."); return;
   }
-});
+  fileBox.textContent=`📦 ${selected.name}  •  ${formatSize(selected.size)}`;
+  fileBox.classList.remove("hidden");
+  error.classList.add("hidden");
+  go.disabled=false;
+};
+
+go.onclick=async()=>{
+  if(!selected)return;
+  go.disabled=true; done.classList.add("hidden"); error.classList.add("hidden"); progress.classList.remove("hidden");
+  const fake=[
+    ["Preparando archivo…",8],
+    ["Subiendo addon…",22],
+    ["Extrayendo packs…",40],
+    ["Analizando estructura…",55],
+    ["Generando BRArchive…",75],
+    ["Empaquetando MCAddon…",90]
+  ];
+  let i=0;
+  const timer=setInterval(()=>{
+    if(i<fake.length){stage.textContent=fake[i][0]; setProgress(fake[i][1]); i++;}
+  },650);
+
+  try{
+    const form=new FormData(); form.append("addon",selected);
+    const response=await fetch("/api/compile",{method:"POST",body:form});
+    clearInterval(timer);
+    if(!response.ok)throw new Error((await response.json()).error||"La compilación falló.");
+    const blob=await response.blob();
+    const url=URL.createObjectURL(blob);
+    download.href=url;
+    download.download=selected.name.replace(/\.mcaddon$/i,"")+"_compiled.mcaddon";
+    setProgress(100); stage.textContent="Compilación completada";
+    doneText.textContent=`${download.download} • ${formatSize(blob.size)}`;
+    done.classList.remove("hidden");
+  }catch(e){
+    clearInterval(timer);
+    showError("❌ "+e.message);
+  }finally{go.disabled=false;}
+};
+
+again.onclick=()=>{input.value="";selected=null;fileBox.classList.add("hidden");done.classList.add("hidden");progress.classList.add("hidden");error.classList.add("hidden");go.disabled=true;setProgress(0);};
+
+function setProgress(n){fill.style.width=n+"%";pct.textContent=n+"%";}
+function showError(t){error.textContent=t;error.classList.remove("hidden");}
+function formatSize(n){return n<1024*1024?(n/1024).toFixed(1)+" KB":(n/1024/1024).toFixed(2)+" MB";}

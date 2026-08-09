@@ -1,38 +1,49 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>BRArchive Compiler</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>BRArchive Compiler</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main class="app">
-    <section class="card">
-      <div class="badge">MINECRAFT • ADDON TOOL</div>
-      <h1>BRArchive Compiler</h1>
-      <p class="subtitle">Sube tu <b>.mcaddon</b> y prepara el proceso de compilación.</p>
+<main class="shell">
+  <section class="hero">
+    <span class="pill">MINECRAFT BEDROCK • BRARCHIVE</span>
+    <h1>BRArchive<br><em>Compiler</em></h1>
+    <p>Procesa tu <strong>.mcaddon</strong> y prepara sus packs usando el compilador BRArchive de referencia.</p>
+  </section>
 
-      <label class="drop" for="addon">
-        <span class="icon">📦</span>
-        <strong>Seleccionar .mcaddon</strong>
-        <small>También puedes tocar aquí desde Android</small>
-        <input id="addon" type="file" accept=".mcaddon">
-      </label>
+  <section class="panel">
+    <label id="drop" class="drop" for="addon">
+      <div class="cube">📦</div>
+      <strong>Selecciona tu MCAddon</strong>
+      <span>Toca para elegir un archivo desde tu teléfono</span>
+      <input id="addon" type="file" accept=".mcaddon">
+    </label>
 
-      <div id="fileInfo" class="file-info hidden"></div>
+    <div id="file" class="file hidden"></div>
+    <button id="go" disabled>⚡ Compilar addon</button>
 
-      <button id="compile" disabled>⚙️ Iniciar compilación</button>
-
-      <div id="progressBox" class="hidden">
-        <div class="status" id="status">Preparando...</div>
-        <div class="bar"><div id="bar"></div></div>
-        <div id="percent">0%</div>
-      </div>
-
-      <div id="result" class="result hidden"></div>
+    <section id="progress" class="hidden">
+      <div class="row"><span id="stage">Preparando…</span><b id="pct">0%</b></div>
+      <div class="track"><div id="fill"></div></div>
+      <div class="hint">No cierres esta página mientras se procesa el archivo.</div>
     </section>
-  </main>
-  <script src="app.js"></script>
+
+    <section id="done" class="hidden done">
+      <div class="check">✓</div>
+      <h2>Compilación terminada</h2>
+      <p id="doneText"></p>
+      <a id="download" class="download">⬇ Descargar MCAddon</a>
+      <button id="again" class="secondary">Procesar otro</button>
+    </section>
+
+    <div id="error" class="hidden error"></div>
+  </section>
+
+  <footer>BRArchive Compiler • procesamiento de archivos</footer>
+</main>
+<script src="app.js"></script>
 </body>
 </html>
