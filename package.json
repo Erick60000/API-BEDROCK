@@ -1,0 +1,16 @@
+{
+  "name": "brarchive-compiler",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Web starter for processing Minecraft .mcaddon files into BRArchive-compatible output.",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "multer": "^2.0.2",
+    "archiver": "^7.0.1",
+    "unzipper": "^0.12.3"
+  }
+}
