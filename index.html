@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>BRArchive Compiler</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <section class="card">
+      <div class="badge">MINECRAFT • ADDON TOOL</div>
+      <h1>BRArchive Compiler</h1>
+      <p class="subtitle">Sube tu <b>.mcaddon</b> y prepara el proceso de compilación.</p>
+
+      <label class="drop" for="addon">
+        <span class="icon">📦</span>
+        <strong>Seleccionar .mcaddon</strong>
+        <small>También puedes tocar aquí desde Android</small>
+        <input id="addon" type="file" accept=".mcaddon">
+      </label>
+
+      <div id="fileInfo" class="file-info hidden"></div>
+
+      <button id="compile" disabled>⚙️ Iniciar compilación</button>
+
+      <div id="progressBox" class="hidden">
+        <div class="status" id="status">Preparando...</div>
+        <div class="bar"><div id="bar"></div></div>
+        <div id="percent">0%</div>
+      </div>
+
+      <div id="result" class="result hidden"></div>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
